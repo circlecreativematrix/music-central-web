@@ -1,14 +1,20 @@
 
 import JZZ from 'jzz'
 import SMF from 'jzz-midi-smf'
+import pino from 'pino';
 
 SMF(JZZ)
-export function midiPlay(smfIn: any) {
+export function midiPlay(smfIn: any, logger : pino.BaseLogger|undefined) {
+  if(logger === undefined){
+    logger = pino()
+  }
   const midiout = JZZ().openMidiOut([0, 1, 2, 3, 4]);
   const player = smfIn.player();
-  console.log("dump", smfIn.dump())
+  logger.debug("dump", smfIn.dump())
   player.connect(midiout);
   player.play()
+  
+  return player
 }
 export function midiToBase64Save(data: any) {
   //https://jazz-soft.net/demo/WriteMidiFile.html
@@ -34,14 +40,21 @@ export function secondsToTicks(secondsIn: string, ticksPerQuarterNote: number = 
 }
 
 
-export function nbefSongToMidi(nbefYamlObj: any, ticksPerQuarterNote: number = 96) {
+export function nbefSongToMidi(nbefYamlObj: any, ticksPerQuarterNote: number = 96, logger:pino.BaseLogger|undefined) {
+  if(logger === undefined){
+    logger = pino()
+  }
+  if(nbefYamlObj === undefined || nbefYamlObj.notes === undefined){
+    logger.error('no notes yet on nbefSongToMidi')
+    return
+
+  }
   var smf = (JZZ.MIDI as MidiConstructor).SMF(2, 96); // type 0, 96 ticks per quarter note
   var trk = new (JZZ.MIDI as MidiConstructor).SMF.MTrk();
   let lastKnownTime = 0
   const tracksInPlay:any =  {0: trk}
   smf.push(tracksInPlay[0]);
   for (let note of nbefYamlObj.notes) {
-    console.log(note.time_s)
     if(tracksInPlay[note.track]=== undefined){
       tracksInPlay[note.track] = new (JZZ.MIDI as MidiConstructor).SMF.MTrk();
       smf.push(tracksInPlay[note.track]);
@@ -67,12 +80,12 @@ export function nbefSongToMidi(nbefYamlObj: any, ticksPerQuarterNote: number = 9
     track.add(lastKnownTime+10, JZZ.MIDI.smfEndOfTrack());
   }
 
-  for (var i = 0; i < smf.length; i++) {
-    for (var j = 0; j < smf[i].length; j++) {
-      console.log('track:', i, 'tick:', smf[i][j].tt, smf[i][j].toString());
-      // or do whatever else with the message
-    }
-  }
+  // for (var i = 0; i < smf.length; i++) {
+  //   for (var j = 0; j < smf[i].length; j++) {
+  //     console.log('track:', i, 'tick:', smf[i][j].tt, smf[i][j].toString());
+  //     // or do whatever else with the message
+  //   }
+  // }
  return smf
  
 

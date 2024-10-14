@@ -13,7 +13,7 @@ import nbef from '../assets/example_nbef.yaml';
 
 test("MidiFileOut", async () => {
    
-    const smf =  nbefSongToMidi(nbef )
+    const smf =  nbefSongToMidi(nbef, 96, undefined )
     //midiPlay(smf) // only works in browser
     const b64Save = midiToBase64Save(smf.dump())
     console.log("b64Save", b64Save)
