@@ -10,7 +10,6 @@ export function midiPlay(smfIn: any, logger : pino.BaseLogger|undefined) {
   }
   const midiout = JZZ().openMidiOut([0, 1, 2, 3, 4]);
   const player = smfIn.player();
-  logger.debug("dump", smfIn.dump())
   player.connect(midiout);
   player.play()
   
@@ -33,10 +32,11 @@ export interface MidiConstructor extends Constructor {
   SMF: Function | { MTrk: Function } | any
 }
 
-export function secondsToTicks(secondsIn: string, ticksPerQuarterNote: number = 96, tempo: number = 120) {
+export function secondsToTicks(secondsIn: string, ticksPerQuarterNote: number = 96, tempo: number = 33) {
   const seconds = parseFloat(secondsIn)
-  const secondsPerTick = (60000 / (tempo * ticksPerQuarterNote)) / 1000
-  return seconds / secondsPerTick * 1.0
+
+  console.log("seconds:" ,seconds,"ticks:", seconds* ticksPerQuarterNote,"ticks  per quarter:", ticksPerQuarterNote)
+  return  seconds* ticksPerQuarterNote
 }
 
 
@@ -49,7 +49,7 @@ export function nbefSongToMidi(nbefYamlObj: any, ticksPerQuarterNote: number = 9
     return
 
   }
-  var smf = (JZZ.MIDI as MidiConstructor).SMF(2, 96); // type 0, 96 ticks per quarter note
+  var smf = (JZZ.MIDI as MidiConstructor).SMF(2, ticksPerQuarterNote); // type 0, 96 ticks per quarter note
   var trk = new (JZZ.MIDI as MidiConstructor).SMF.MTrk();
   let lastKnownTime = 0
   const tracksInPlay:any =  {0: trk}
@@ -90,4 +90,49 @@ export function nbefSongToMidi(nbefYamlObj: any, ticksPerQuarterNote: number = 9
  
 
 
+}
+
+export function placeholder(){
+  return `notes: 'key_type:major,key_note:C4,tempo:60
+  halfsteps:0,time:P,note:0
+  halfsteps:0,time:P,note:2
+  halfsteps:0,time:P,note:4
+  time:P+1/4
+  
+  halfsteps:0,time:P,note:1
+  halfsteps:0,time:P,note:3
+  halfsteps:0,time:P,note:5
+  time:P+1/4
+  
+  halfsteps:0,time:P,note:2
+  halfsteps:0,time:P,note:4
+  halfsteps:0,time:P,note:6
+  time:P+1/4
+  
+  halfsteps:0,time:P,note:3
+  halfsteps:0,time:P,note:5
+  halfsteps:0,time:P,note:7
+  time:P+1/4
+  
+  halfsteps:0,time:P,note:4
+  halfsteps:0,time:P,note:6
+  halfsteps:0,time:P,note:8
+  time:P+1/4
+  
+  halfsteps:0,time:P,note:5
+  halfsteps:0,time:P,note:7
+  halfsteps:0,time:P,note:9
+  time:P+1/4
+  
+  halfsteps:0,time:P,note:6
+  halfsteps:0,time:P,note:8
+  halfsteps:0,time:P,note:10
+  time:P+1/4
+
+  
+  halfsteps:0,time:P,note:7
+  halfsteps:0,time:P,note:9
+  halfsteps:0,time:P,note:11
+  time:P+1/4
+  '`
 }

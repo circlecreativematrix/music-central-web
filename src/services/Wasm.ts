@@ -4,8 +4,6 @@ import '../../public/wasm_exec.js';
 // Ensure Go is available in the global scope
 var wasmMain = '/main.wasm'
 import '../wasmTypes.d.ts';
-import cMajorScale  from '../assets/example_standard_note.yaml';
-
 
 export const wasmBrowserInstantiate = async (wasmModuleUrl:string, importObject:any) => {
     let response = undefined;

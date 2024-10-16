@@ -1,18 +1,21 @@
 import { useEffect, useState } from 'react'
 import YAML from 'js-yaml'
 import pino from 'pino'
+import placeholderText from './assets/example_standard_note.yaml'
 const logger = pino({
   browser: {
     asObject: false, // Log as objects for easier parsing
   }
 });
 import './App.css'
-import { nbefSongToMidi, midiPlay, midiToBase64Save } from './services/MidiFileOut'
+import { nbefSongToMidi, midiPlay, midiToBase64Save, placeholder } from './services/MidiFileOut'
 import { runWasmAdd } from './services/Wasm'
+import React from 'react';
 
 function btnHandlerConvert(standardText: string, SetPlayer: (arg0: any) => void, SetFileOut: (arg0: string) => void) {
     runWasmAdd(standardText).then((res)=>{
       // error handling?
+        console.log(res)
         const nbefYamlObj = YAML.load(res)
         const smf =  nbefSongToMidi(nbefYamlObj, 96, logger)
         SetPlayer(midiPlay(smf, logger))
@@ -22,25 +25,36 @@ function btnHandlerConvert(standardText: string, SetPlayer: (arg0: any) => void,
   }
 
 function App() {
+  const refText = React.useRef<HTMLTextAreaElement>(null)
+
+
   const [fileOut, SetFileOut] = useState("")
  // const [wasmOut, SetWasmOut] = useState("")
   const [player, SetPlayer] = useState(undefined)
   const [standardText, SetStandardText] = useState("")
   useEffect(()=>{
-   
+    if(refText.current){
+      refText.current.value = placeholder()
+      SetStandardText(placeholder())
+    }
 
   },[])
   return (
     <>
     <div>
       <h1>Wasm Midi</h1>
-      <textarea value={standardText} onChange={(e)=>SetStandardText(e.target.value)}></textarea>
+      <textarea ref={refText} value={standardText} onChange={(e)=>SetStandardText(e.target.value)}></textarea>
+      <br/><div>
       <button onClick={()=>btnHandlerConvert(standardText, SetPlayer, SetFileOut) }>Convert</button>
-      
-      <button onClick={()=> {
-        if(player){
-          (player as any).stop();
-          }}}>Stop</button>
+     
+     <button onClick={()=> {
+       if(player){
+         (player as any).stop();
+         }}}>Stop</button>
+        </div>
+    </div>
+    <div>
+    <textarea></textarea>
     </div>
       <div>
         <a href={fileOut} download="nameOfDownload.mid" target="_blank">
@@ -55,7 +69,6 @@ function App() {
 }
 
 export default App
-function onEffect(arg0: () => void) {
-  throw new Error('Function not implemented.')
-}
+
+
 
