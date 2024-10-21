@@ -8,10 +8,13 @@ export function midiPlay(smfIn: any, logger : pino.BaseLogger|undefined) {
   if(logger === undefined){
     logger = pino()
   }
-  const midiout = JZZ().openMidiOut([0, 1, 2, 3, 4]);
+  const midiout = JZZ().openMidiOut();
   const player = smfIn.player();
   player.connect(midiout);
+  console.log('player', player, "midiout", midiout)
   player.play()
+  //console.log('midiout', midiout)
+  
   
   return player
 }

@@ -11,6 +11,7 @@ import './App.css'
 import { nbefSongToMidi, midiPlay, midiToBase64Save, placeholder } from './services/MidiFileOut'
 import { runWasmAdd } from './services/Wasm'
 import React from 'react';
+import { RecordMidi } from './components/RecordMidi';
 
 function btnHandlerConvert(standardText: string, SetPlayer: (arg0: any) => void, SetFileOut: (arg0: string) => void) {
     runWasmAdd(standardText).then((res)=>{
@@ -42,7 +43,8 @@ function App() {
   return (
     <>
     <div>
-      <h1>Wasm Midi</h1>
+      <h1>Circle Creative Matrix Midi</h1>
+      <RecordMidi/>
       <textarea ref={refText} value={standardText} onChange={(e)=>SetStandardText(e.target.value)}></textarea>
       <br/><div>
       <button onClick={()=>btnHandlerConvert(standardText, SetPlayer, SetFileOut) }>Convert</button>

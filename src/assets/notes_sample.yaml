@@ -1,0 +1,21 @@
+notes: | 
+  time:P,note:C4
+  time:P,note:E5
+  time:P,note:G4
+  time:P+1/4
+  label: stuff goes here
+  time:P,note:C4
+  time:P,note:E5
+  time:P,note:G4
+  time:P+1/4
+
+
+  key_type:major,key_note:C4,tempo:60
+  time:P+1/4,note:0,velocity:127
+  time:P+1/4,note:P+1
+  time:P+1/4,note:P+1
+  time:P+1/4,note:P+1
+  time:P+1/4,note:P+1
+  time:P+1/4,note:P+1
+  time:P+1/4,note:P+1
+  time:P+1/4,note:P+1
