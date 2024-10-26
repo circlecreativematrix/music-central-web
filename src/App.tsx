@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import YAML from 'js-yaml'
 import pino from 'pino'
-import placeholderText from './assets/example_standard_note.yaml'
 const logger = pino({
   browser: {
     asObject: false, // Log as objects for easier parsing

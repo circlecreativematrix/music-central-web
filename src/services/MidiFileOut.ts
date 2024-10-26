@@ -96,46 +96,9 @@ export function nbefSongToMidi(nbefYamlObj: any, ticksPerQuarterNote: number = 9
 }
 
 export function placeholder(){
-  return `notes: 'key_type:major,key_note:C4,tempo:60
-  halfsteps:0,time:P,note:0
-  halfsteps:0,time:P,note:2
-  halfsteps:0,time:P,note:4
-  time:P+1/4
-  
-  halfsteps:0,time:P,note:1
-  halfsteps:0,time:P,note:3
-  halfsteps:0,time:P,note:5
-  time:P+1/4
-  
-  halfsteps:0,time:P,note:2
-  halfsteps:0,time:P,note:4
-  halfsteps:0,time:P,note:6
-  time:P+1/4
-  
-  halfsteps:0,time:P,note:3
-  halfsteps:0,time:P,note:5
-  halfsteps:0,time:P,note:7
-  time:P+1/4
-  
-  halfsteps:0,time:P,note:4
-  halfsteps:0,time:P,note:6
-  halfsteps:0,time:P,note:8
-  time:P+1/4
-  
-  halfsteps:0,time:P,note:5
-  halfsteps:0,time:P,note:7
-  halfsteps:0,time:P,note:9
-  time:P+1/4
-  
-  halfsteps:0,time:P,note:6
-  halfsteps:0,time:P,note:8
-  halfsteps:0,time:P,note:10
-  time:P+1/4
-
-  
-  halfsteps:0,time:P,note:7
-  halfsteps:0,time:P,note:9
-  halfsteps:0,time:P,note:11
-  time:P+1/4
-  '`
+  return `chord:I,dur:1/4,split:1,chord_type:major,key_type:major,key_note:C4,time:P+1/4,track:1
+chord:ii,time:P+1/4
+chord:iii,time:P+1/4
+chord:IV,time:P+1/4
+chord:V,time:P+1/4`
 }
