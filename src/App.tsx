@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import YAML from 'js-yaml'
 import pino from 'pino'
+import placeholderText from './assets/example_standard_note.yaml'
 const logger = pino({
   browser: {
     asObject: false, // Log as objects for easier parsing
@@ -14,16 +15,16 @@ import { RecordMidi } from './components/RecordMidi';
 const ENTRY_CHORDS = "entry_chords"
 function btnHandlerConvert(standardText: string, SetPlayer: (arg0: any) => void, SetFileOut: (arg0: string) => void) {
     runWasmChordStandardNote(standardText).then(res =>{
-      console.log(res, '_input_from_chords')
-      // runWasmStandardNote(res).then((res)=>{
-      //   // error handling?
-      //     console.log(res)
-      //     const nbefYamlObj = YAML.load(res)
-      //     const smf =  nbefSongToMidi(nbefYamlObj, 96, logger)
-      //     SetPlayer(midiPlay(smf, logger))
-      //     SetFileOut(midiToBase64Save(smf.dump()))
-      //     console.log("alldone!")
-      //   })
+      console.log(res, 'chord_standard_note')
+      runWasmStandardNote(res).then((res)=>{
+        // error handling?
+          console.log(res,'standardnote')
+          const nbefYamlObj = YAML.load(res)
+          const smf =  nbefSongToMidi(nbefYamlObj, 96, logger)
+          SetPlayer(midiPlay(smf, logger))
+          SetFileOut(midiToBase64Save(smf.dump()))
+          console.log("alldone!")
+        })
       })
     }
 
