@@ -15,15 +15,15 @@ const ENTRY_CHORDS = "entry_chords"
 function btnHandlerConvert(standardText: string, SetPlayer: (arg0: any) => void, SetFileOut: (arg0: string) => void) {
     runWasmChordStandardNote(standardText).then(res =>{
       console.log(res, '_input_from_chords')
-      runWasmStandardNote(res).then((res)=>{
-        // error handling?
-          console.log(res)
-          const nbefYamlObj = YAML.load(res)
-          const smf =  nbefSongToMidi(nbefYamlObj, 96, logger)
-          SetPlayer(midiPlay(smf, logger))
-          SetFileOut(midiToBase64Save(smf.dump()))
-          console.log("alldone!")
-        })
+      // runWasmStandardNote(res).then((res)=>{
+      //   // error handling?
+      //     console.log(res)
+      //     const nbefYamlObj = YAML.load(res)
+      //     const smf =  nbefSongToMidi(nbefYamlObj, 96, logger)
+      //     SetPlayer(midiPlay(smf, logger))
+      //     SetFileOut(midiToBase64Save(smf.dump()))
+      //     console.log("alldone!")
+      //   })
       })
     }
 
