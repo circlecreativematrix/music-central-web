@@ -5,4 +5,8 @@ import ViteYaml from '@modyfi/vite-plugin-yaml';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [ ViteYaml(),react()],
+  test: {
+    exclude: [],
+  },
+  base: "play.circlecreativematrix.com"
 })

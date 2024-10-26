@@ -23,5 +23,5 @@
       "@modyfi/vite-plugin-yaml/modules",
       ],
   },
-  "include": ["src"]
+  "include": ["src", "public/wasm_exec.js"]
 }
