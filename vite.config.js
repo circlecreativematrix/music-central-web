@@ -8,5 +8,5 @@ export default defineConfig({
   test: {
     exclude: [],
   },
-  base: "play.circlecreativematrix.com"
+  base: "/"
 })
