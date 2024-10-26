@@ -3,6 +3,7 @@ import '../../public/wasm_exec.js';
 
 // Ensure Go is available in the global scope
 var wasmMain = '/main.wasm'
+var wasmChords ='/chords.wasm'
 import '../wasmTypes.d.ts';
 
 export const wasmBrowserInstantiate = async (wasmModuleUrl:string, importObject:any) => {
@@ -32,18 +33,17 @@ export const wasmBrowserInstantiate = async (wasmModuleUrl:string, importObject:
   };
 
 const go = new Go(); // Defined in wasm_exec.js. Don't forget to add this in your index.html.
-go.importObject.gojs["syscall/js.finalizeRef"] = _ => 0  // 😉
+const goChord = new Go();
+go.importObject.gojs["syscall/js.finalizeRef"] = (_: any) => 0;  // 😉
+goChord.importObject.gojs["syscall/js.finalizeRef"] = (_: any) => 0
 // https://github.com/tinygo-org/tinygo/issues/1140
 // may need to switch back to regular go? slow memory leak
-export const runWasmAdd = async (notesStandardYaml:string) => {
+export const runWasmStandardNote = async (notesStandardYaml:string) => {
   // Get the importObject from the go instance.
   const importObject = go.importObject;
 
   // Instantiate our wasm module
-  interface wasmModuleType extends  WebAssembly.Exports {
-    add : (a:number,b:number) => number
-
-  }
+ 
   interface WindowType extends Window, Global {
     wasm: (yamlStrIn: string) => string;
   }
@@ -52,4 +52,22 @@ export const runWasmAdd = async (notesStandardYaml:string) => {
   const result = (window as unknown as WindowType).wasm(JSON.stringify(notesStandardYaml))
   return result
 };
-//runWasmAdd();
+
+export const runWasmChordStandardNote = async (notesStandardYaml:string) => {
+  // Get the importObject from the go instance.
+  //const go = new Go();
+  const importObject = goChord.importObject;
+
+  // Instantiate our wasm module
+  interface WindowType extends Window, Global {
+    chordWasm: (yamlStrIn: string) => string;
+  }
+  // const { instance } = await WebAssembly.instantiateStreaming(
+  //   fetch(filename),
+  //   { env: { write } },
+  // );
+  const wasmModule = await wasmBrowserInstantiate(wasmChords, importObject);
+  goChord.run(wasmModule.instance); // do i need another go instance to run this?
+  const result = (window as unknown as WindowType).chordWasm(JSON.stringify(notesStandardYaml))
+  return result
+};

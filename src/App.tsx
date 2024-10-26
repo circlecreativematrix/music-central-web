@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import YAML from 'js-yaml'
 import pino from 'pino'
-import placeholderText from './assets/example_standard_note.yaml'
 const logger = pino({
   browser: {
     asObject: false, // Log as objects for easier parsing
@@ -9,21 +8,25 @@ const logger = pino({
 });
 import './App.css'
 import { nbefSongToMidi, midiPlay, midiToBase64Save, placeholder } from './services/MidiFileOut'
-import { runWasmAdd } from './services/Wasm'
+import { runWasmChordStandardNote, runWasmStandardNote } from './services/Wasm'
 import React from 'react';
 import { RecordMidi } from './components/RecordMidi';
-
+const ENTRY_CHORDS = "entry_chords"
 function btnHandlerConvert(standardText: string, SetPlayer: (arg0: any) => void, SetFileOut: (arg0: string) => void) {
-    runWasmAdd(standardText).then((res)=>{
-      // error handling?
-        console.log(res)
-        const nbefYamlObj = YAML.load(res)
-        const smf =  nbefSongToMidi(nbefYamlObj, 96, logger)
-        SetPlayer(midiPlay(smf, logger))
-        SetFileOut(midiToBase64Save(smf.dump()))
-        console.log("alldone!")
+    runWasmChordStandardNote(standardText).then(res =>{
+      console.log(res, 'resssy')
+      runWasmStandardNote(res).then((res)=>{
+        // error handling?
+          console.log(res)
+          const nbefYamlObj = YAML.load(res)
+          const smf =  nbefSongToMidi(nbefYamlObj, 96, logger)
+          SetPlayer(midiPlay(smf, logger))
+          SetFileOut(midiToBase64Save(smf.dump()))
+          console.log("alldone!")
+        })
       })
-  }
+    }
+
 
 function App() {
   const refText = React.useRef<HTMLTextAreaElement>(null)
@@ -34,9 +37,18 @@ function App() {
   const [player, SetPlayer] = useState(undefined)
   const [standardText, SetStandardText] = useState("")
   useEffect(()=>{
-    if(refText.current){
+    const storedText = localStorage.getItem(ENTRY_CHORDS);
+    if (storedText ) {
+      if(refText.current){
+      refText.current.value = storedText
+      SetStandardText(storedText)
+      }
+    }
+    else{
+      if(refText.current){
       refText.current.value = placeholder()
       SetStandardText(placeholder())
+      }
     }
 
   },[])
@@ -45,7 +57,11 @@ function App() {
     <div>
       <h1>Circle Creative Matrix Midi</h1>
       <RecordMidi/>
-      <textarea ref={refText} value={standardText} onChange={(e)=>SetStandardText(e.target.value)}></textarea>
+      <textarea style={{ width: '600px', height: '600px' }} ref={refText} value={standardText} onChange={(e)=>{
+        SetStandardText(e.target.value);  
+        localStorage.setItem(ENTRY_CHORDS, e.target.value
+
+        )}}></textarea>
       <br/><div>
       <button onClick={()=>btnHandlerConvert(standardText, SetPlayer, SetFileOut) }>Convert</button>
      
