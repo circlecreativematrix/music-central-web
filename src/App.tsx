@@ -14,7 +14,7 @@ import { RecordMidi } from './components/RecordMidi';
 const ENTRY_CHORDS = "entry_chords"
 function btnHandlerConvert(standardText: string, SetPlayer: (arg0: any) => void, SetFileOut: (arg0: string) => void) {
     runWasmChordStandardNote(standardText).then(res =>{
-      console.log(res, 'resssy')
+      console.log(res, '_input_from_chords')
       runWasmStandardNote(res).then((res)=>{
         // error handling?
           console.log(res)
