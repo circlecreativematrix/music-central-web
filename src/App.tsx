@@ -20,7 +20,7 @@ function btnHandlerConvert(standardText: string, SetPlayer: (arg0: any) => void,
           console.log(res,'standardnote')
           const nbefYamlObj = YAML.load(res)
           const smf =  nbefSongToMidi(nbefYamlObj, 96, logger)
-          SetPlayer(midiPlay(smf, logger))
+          SetPlayer(midiPlay(smf, true, true))
           SetFileOut(midiToBase64Save(smf.dump()))
           console.log("alldone!")
         })

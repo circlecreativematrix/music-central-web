@@ -2,17 +2,28 @@
 import JZZ from 'jzz'
 import SMF from 'jzz-midi-smf'
 import pino from 'pino';
-
+import { Tiny } from 'jzz-synth-tiny';
+Tiny(JZZ);
 SMF(JZZ)
-export function midiPlay(smfIn: any, logger : pino.BaseLogger|undefined) {
-  if(logger === undefined){
-    logger = pino()
-  }
-  const midiout = JZZ().openMidiOut();
+
+export function midiPlay(smfIn: any, isMidi: boolean = true, isAudio: boolean = true ) {
+ 
+ 
   const player = smfIn.player();
-  player.connect(midiout);
-  console.log('player', player, "midiout", midiout)
-  player.play()
+  if(isMidi){
+    const midiout = JZZ().openMidiOut();
+    player.connect(midiout);
+  }
+  if(isAudio){
+    const audioOut = (JZZ as any).synth.Tiny()
+    player.connect(audioOut)
+
+  }
+  if(isAudio){
+    setTimeout(()=>player.play(), 500)
+  }else{
+    player.play()
+  }
   //console.log('midiout', midiout)
   
   
