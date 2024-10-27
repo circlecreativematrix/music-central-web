@@ -48,8 +48,6 @@ export interface MidiConstructor extends Constructor {
 
 export function secondsToTicks(secondsIn: string, ticksPerQuarterNote: number = 96) {
   const seconds = parseFloat(secondsIn)
-
-  console.log("seconds:" ,seconds,"ticks:", seconds* ticksPerQuarterNote,"ticks  per quarter:", ticksPerQuarterNote)
   return  seconds* ticksPerQuarterNote
 }
 
@@ -77,6 +75,7 @@ export function nbefSongToMidi(nbefYamlObj: any, ticksPerQuarterNote: number = 9
     const time = secondsToTicks(note.time_s,ticksPerQuarterNote )
     lastKnownTime = time
     if(note.signal === "note_on"){
+        currentTrack.add(time,JZZ.MIDI.smfBPM(note.tempo))
         currentTrack.add(time,JZZ.MIDI.noteOn(0, note.midi, note.velocity))
     }else if(note.signal === "note_off"){
         currentTrack.add(time, JZZ.MIDI.noteOff(0, note.midi))
