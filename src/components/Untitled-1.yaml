@@ -1,0 +1,14 @@
+
+time:P+1/1,label:give_time_for_audio_to_catch_up
+chord:I,dur:1/4,split:1,chord_type:major,key_type:major,key_note:C4,time:P+1/4
+chord:ii,time:P+1/4
+chord:iii,time:P+1/4,label:this_is_pretty_cool
+chord:IV,time:P+1/4
+chord:V,time:P+1/1
+note:0,time:P+1/4
+note:1,dur:1/4,time:P+1/4
+note:2,dur:1/4,time:P+1/4
+note:4,dur:1/4,time:P+1/4
+note:5,dur:1/4,time:P+1/4
+note:6,time:P+1/4e:P+1/4
+note:7,time:P+1/4

@@ -28,7 +28,7 @@ function handleMidiInput(msg: any, output:string[], startTime: number, count: nu
  
    
 }
-function handleBtnRecord(midiIn: string = "undefined", SetMidiInConnection: any, output: any[], setOutput: any, 
+function handleBtnRecord(midiIn: string = "undefined", SetMidiInConnection: any, setOutput: any, 
 ) {
     console.log("Recording")
     let count = 0 
@@ -66,7 +66,7 @@ export function RecordMidi() {
         <div>
             <textarea defaultValue={output.join("\n")}></textarea>
             <button onClick={() => {
-                handleBtnRecord("loopy", SetMidiInConnection, output, setOutput)
+                handleBtnRecord("loopy", SetMidiInConnection, setOutput)
             }}>Record</button>
             <button onClick={() => { 
                 handleBtnStopRecord(midiInConnection);
