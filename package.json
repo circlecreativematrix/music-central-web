@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "typer": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host 0.0.0.0",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
@@ -15,6 +15,7 @@
     "@jochlain/babel-plugin-yaml": "^1.0.0",
     "@typescript-eslint/parser": "^8.8.1",
     "@vitejs/plugin-react": "^4.3.2",
+    "jotai": "^2.12.2",
     "js-yaml": "^4.1.0",
     "jzz": "^1.8.6",
     "jzz-midi-smf": "^1.9.5",

@@ -3,12 +3,14 @@ import JZZ from 'jzz'
 import SMF from 'jzz-midi-smf'
 import pino from 'pino';
 import { Tiny } from 'jzz-synth-tiny';
+import { NBEF } from '../types/NBEF';
+import { Ref } from 'react';
 Tiny(JZZ);
 SMF(JZZ)
-
-export function midiPlay(smfIn: any, isMidi: boolean = true, isAudio: boolean = true ) {
- 
- 
+export const tiny = (JZZ as any).synth.Tiny()
+export function midiPlay(smfIn: any, isMidi: boolean = true, isAudio: boolean = false ) {
+ // convert nbef to midi
+  
   const player = smfIn.player();
   if(isMidi){
     const midiout = JZZ().openMidiOut();
@@ -51,6 +53,64 @@ export function secondsToTicks(secondsIn: string, ticksPerQuarterNote: number = 
   return  seconds* ticksPerQuarterNote
 }
 
+export function sleep(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+/**
+ * This plays back real time using a start of new Date and goes from there. 
+ * @param nbefYamlObj -yaml NBEF object 
+ */
+export async function nbefToAudio(nbefYamlObj: NBEF, isQuit: Ref<boolean>) {
+   
+    const startTime = new Date().getTime()
+    let currentTime = new Date().getTime()
+    // this needs to be done on wasm side.
+    nbefYamlObj.notes.sort((a, b) => {
+      const timeA = parseFloat(a.time_s as string)
+      const timeB = parseFloat(b.time_s as string)
+      return timeA - timeB
+    })
+    for(let nbefNote of nbefYamlObj.notes){
+      if((isQuit as any)!.current){
+        console.log("quitting early")
+        break
+      }
+
+      //const time = secondsToTicks(nbefNote.time_s as string,ticksPerQuarterNote )
+      const noteTimeMs = parseFloat(nbefNote.time_s as string)*1000
+      console.log("noteTimeMs", noteTimeMs)
+      currentTime = new Date().getTime() - startTime 
+      while(noteTimeMs*1.0 > currentTime ){ //0.8 is multiplier approximate to speed up the audio.
+        // wait for the time to be right
+        currentTime = new Date().getTime()- startTime
+        //console.log("waiting for first less than second "+ noteTimeMs, currentTime)
+        await sleep(1)
+      }
+      if(nbefNote.signal === "note_on"){
+        console.log("note on", currentTime, nbefNote.track,nbefNote.midi, nbefNote.velocity)
+        tiny.noteOn(nbefNote.track,nbefNote.midi, nbefNote.velocity)
+      
+      }else if(nbefNote.signal === "note_off"){
+        console.log("note off", currentTime, nbefNote.track,nbefNote.midi, nbefNote.velocity)
+        tiny.noteOff(nbefNote.track,nbefNote.midi)
+       
+      }
+      else if (nbefNote.signal === undefined){
+        console.log('no signal')
+        continue // do nothing
+      }
+      else{
+        throw new Error( "Unknown signal"+ nbefNote.signal+ nbefNote)
+      }
+      
+    }
+ 
+
+
+
+
+
+}
 
 export function nbefSongToMidi(nbefYamlObj: any, ticksPerQuarterNote: number = 96, logger:pino.BaseLogger|undefined) {
   if(logger === undefined){
