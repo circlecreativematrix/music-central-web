@@ -38,7 +38,7 @@ function App() {
 
 
   const [fileOut, SetFileOut] = useState("")
-  const [player, SetPlayer] = useState(undefined)
+  const [player] = useState(undefined)
   const [standardText, SetStandardText] = useState("")
   const isQuit = React.useRef(false)
   useEffect(() => {
