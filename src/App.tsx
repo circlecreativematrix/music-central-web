@@ -11,10 +11,9 @@ import './App.css'
 import { nbefSongToMidi, midiToBase64Save, placeholder, nbefToAudio } from './services/MidiFileOut'
 import { runWasmChordStandardNote, runWasmStandardNote } from './services/Wasm'
 import React from 'react';
-import { RecordMidi } from './components/RecordMidi';
 import { NBEF } from './types/NBEF';
 const ENTRY_CHORDS = "entry_chords"
-function btnHandlerConvert(standardText: string, isQuit: Ref<boolean>, SetPlayer: (arg0: any) => void, SetFileOut: (arg0: string) => void) {
+function btnHandlerConvert(standardText: string, isQuit: Ref<boolean>, SetFileOut: (arg0: string) => void) {
 
   runWasmChordStandardNote(standardText).then(res => {
     console.log(res, 'chord_standard_note')
@@ -39,7 +38,7 @@ function App() {
 
 
   const [fileOut, SetFileOut] = useState("")
-  const [player, SetPlayer] = useState(undefined)
+  const [player] = useState(undefined)
   const [standardText, SetStandardText] = useState("")
   const isQuit = React.useRef(false)
   useEffect(() => {
@@ -71,7 +70,7 @@ function App() {
         <br /><div>
           <button onClick={() => {
             isQuit.current = false
-            btnHandlerConvert(standardText, isQuit, SetPlayer, SetFileOut)
+            btnHandlerConvert(standardText, isQuit, SetFileOut)
           }}>Convert</button>
 
           <button onClick={() => {
