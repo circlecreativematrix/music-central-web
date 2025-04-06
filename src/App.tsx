@@ -7,10 +7,11 @@ const logger = pino({
   }
 });
 import './App.css'
-import { nbefSongToMidi, midiPlay, midiToBase64Save, placeholder } from './services/MidiFileOut'
+import { nbefSongToMidi, midiPlay, midiToBase64Save, placeholder, nbefToAudio } from './services/MidiFileOut'
 import { runWasmChordStandardNote, runWasmStandardNote } from './services/Wasm'
 import React from 'react';
 import { RecordMidi } from './components/RecordMidi';
+import { NBEF } from './types/NBEF';
 const ENTRY_CHORDS = "entry_chords"
 function btnHandlerConvert(standardText: string, SetPlayer: (arg0: any) => void, SetFileOut: (arg0: string) => void) {
     runWasmChordStandardNote(standardText).then(res =>{
@@ -18,9 +19,12 @@ function btnHandlerConvert(standardText: string, SetPlayer: (arg0: any) => void,
       runWasmStandardNote(res).then((res)=>{
         // error handling?
           console.log(res,'standardnote')
-          const nbefYamlObj = YAML.load(res)
+          const nbefYamlObj = YAML.load(res) as NBEF
+          console.log('outputting audio')
+          SetPlayer(nbefToAudio(nbefYamlObj, 96))
+          console.log('outputting midi')
           const smf =  nbefSongToMidi(nbefYamlObj, 96, logger)
-          SetPlayer(midiPlay(smf, true, true))
+          //SetPlayer(midiPlay(smf, true, false))
           SetFileOut(midiToBase64Save(smf.dump()))
           console.log("alldone!")
         })

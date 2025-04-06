@@ -3,12 +3,13 @@ import JZZ from 'jzz'
 import SMF from 'jzz-midi-smf'
 import pino from 'pino';
 import { Tiny } from 'jzz-synth-tiny';
+import { NBEF } from '../types/NBEF';
 Tiny(JZZ);
 SMF(JZZ)
 
-export function midiPlay(smfIn: any, isMidi: boolean = true, isAudio: boolean = true ) {
- 
- 
+export function midiPlay(smfIn: any, isMidi: boolean = true, isAudio: boolean = false ) {
+ // convert nbef to midi
+  
   const player = smfIn.player();
   if(isMidi){
     const midiout = JZZ().openMidiOut();
@@ -50,7 +51,18 @@ export function secondsToTicks(secondsIn: string, ticksPerQuarterNote: number = 
   const seconds = parseFloat(secondsIn)
   return  seconds* ticksPerQuarterNote
 }
+export function nbefToAudio(nbefYamlObj: NBEF, ticksPerQuarterNote: number = 96) {
+    const audioOut = (JZZ as any).synth.Tiny()
+  audioOut.setSampleRate(44100);
+  audioOut.setVolume(0.8);
+  audioOut.setReverb(0.5);
+  audioOut.setTempo(nbefYamlObj.notes[0].tempo);
+  audioOut.noteOn(nbefYamlObj.notes[0].midi, );
 
+
+
+
+}
 
 export function nbefSongToMidi(nbefYamlObj: any, ticksPerQuarterNote: number = 96, logger:pino.BaseLogger|undefined) {
   if(logger === undefined){

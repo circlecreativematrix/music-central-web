@@ -1,28 +1,21 @@
 export interface NBEFNote {
-    Midi?: number;
-    Signal?: string;
-    TimeSec?: string;
-    OriginalTime?: string;
-    OriginalNote?: string;
-    Track: number;
-    Velocity: number;
-    BeatType?: string;
-    NoteType?: string;
-    Tempo?: number;
-    KeyNote?: string;
-    KeyType?: string;
-    Note?: number;
-    Muted?: boolean;
-    Label?: string;
-    Duration?: string;
-    IsIOAutomatic?: boolean;
-    Insert?: boolean;
-    Halfsteps?: number;
-    Entries?: { [key: string]: string };
+    midi?: number
+    signal?: string
+    time_s?: string
+    original_time?: string
+    original_note?: string
+    track?: number
+    velocity: number
+    beat_type?: string
+    note_type?: string
+    tempo?: number
+    duration?: string
+    is_io_automatic?: boolean
+    entries?: any
 }
 
 export interface NBEF {
-    Author?: string;
+    author?: string;
     id?: string;
-    Notes: NBEFNote[];
+    notes: NBEFNote[];
 }
