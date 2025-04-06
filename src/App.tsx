@@ -21,7 +21,7 @@ function btnHandlerConvert(standardText: string, SetPlayer: (arg0: any) => void,
           console.log(res,'standardnote')
           const nbefYamlObj = YAML.load(res) as NBEF
           console.log('outputting audio')
-          SetPlayer(nbefToAudio(nbefYamlObj, 96))
+          nbefToAudio(nbefYamlObj)
           console.log('outputting midi')
           const smf =  nbefSongToMidi(nbefYamlObj, 96, logger)
           //SetPlayer(midiPlay(smf, true, false))
