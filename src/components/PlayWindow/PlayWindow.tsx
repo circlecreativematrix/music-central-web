@@ -10,16 +10,16 @@ const logger = pino({
 });
 import './PlayWindow.css'
 
-import { nbefSongToMidi, midiToBase64Save, placeholder, nbefToAudio, midiPlay } from '../../services/MidiFileOut'
+import { nbefSongToMidi, midiToBase64Save, placeholder, nbefToAudio } from '../../services/MidiFileOut'
 import { runWasmChordStandardNote, runWasmStandardNote } from '../../services/Wasm'
 import React from 'react';
 import { NBEF } from '../../types/NBEF';
 const ENTRY_CHORDS = "entry_chords"
-let isMobile = window.innerWidth < 768
+//let isMobile = window.innerWidth < 768
 ///Android|webOS|iPhone|iPad|iPod|BlackBerry|Opera Mini/i.test(navigator.userAgent);
 
 
-function btnHandlerConvert(standardText: string, isQuit: Ref<boolean>, SetFileOut: (arg0: string) => void, SetPlayer: any) {
+function btnHandlerConvert(standardText: string, isQuit: Ref<boolean>, SetFileOut: (arg0: string) => void) {
 
     runWasmChordStandardNote(standardText).then(res => {
         console.log(res, 'chord_standard_note')
@@ -56,9 +56,9 @@ interface PlayWindowProps {
 
 function PlayWindow({ text, id, title, description, recap }: PlayWindowProps) {
     const refText = React.useRef<HTMLTextAreaElement>(null)
-    isMobile = window.innerWidth < 768
+    //isMobile = window.innerWidth < 768
     const [fileOut, SetFileOut] = useState("")
-    const [player, SetPlayer] = useState(undefined)
+    const [player] = useState(undefined)
     const [standardText, SetStandardText] = useState("")
     const isQuit = React.useRef(false)
     const descriptionText = description || ""
@@ -93,7 +93,7 @@ function PlayWindow({ text, id, title, description, recap }: PlayWindowProps) {
                 <div>
                     <button onClick={() => {
                         isQuit.current = false
-                        btnHandlerConvert(standardText, isQuit, SetFileOut, SetPlayer)
+                        btnHandlerConvert(standardText, isQuit, SetFileOut)
                     }}>Convert</button>
 
                     <button onClick={() => {
