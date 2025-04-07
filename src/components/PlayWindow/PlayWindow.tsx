@@ -3,7 +3,6 @@ import { Ref, useEffect, useState } from 'react'
 import YAML from 'js-yaml'
 import pino from 'pino'
 import { addBrToDescription } from '../../services/TextUtils'
-import { useRef } from 'react'
 const logger = pino({
     browser: {
         asObject: false, // Log as objects for easier parsing
