@@ -233,7 +233,7 @@ note:2,time:P
 note:4,time:P
 label:add_a_second_layer_same_track_by_setting_cursor_to_START
 time:$START
-vol:40_20
+vol:77_20
 track:2
 note:0,time:P+1/16
 note:0,time:P+1/16

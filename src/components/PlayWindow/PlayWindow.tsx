@@ -28,17 +28,16 @@ function btnHandlerConvert(standardText: string, isQuit: Ref<boolean>, SetFileOu
             console.log(res, 'standardnote')
             const nbefYamlObj = YAML.load(res) as NBEF
             console.log('outputting audio')
-            if (!isMobile) {
-                console.log('not mobile')
-                nbefToAudio(nbefYamlObj, isQuit)
-            }
+            console.log('not mobile')
+            nbefToAudio(nbefYamlObj, isQuit)
+
 
             console.log('outputting midi')
             const smf = nbefSongToMidi(nbefYamlObj, 96, logger)
-            if (isMobile) {
-                console.log('MOBILE!')
-                SetPlayer(midiPlay(smf, false, true))
-            }
+            // if (isMobile) {
+            //     console.log('MOBILE!')
+            //     SetPlayer(midiPlay(smf, false, true))
+            // }
 
             SetFileOut(midiToBase64Save(smf.dump()))
             console.log("alldone!")
