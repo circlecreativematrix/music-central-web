@@ -34,8 +34,8 @@ I'm pretty sure this works out of the box importing as a CSV, but there's no fro
 
 I want to create more tests and create more documentation. This is a late POC early MVP. It would be cool to put the documentation in headers in the code so it's tied together. 
 `
- const textFunding = `I have a few ideas for the funding model, feedback would be appreciated on this. Ideally, I could get at least two corporate sponsors for feature adding and support funds. 
- If that's not an option,  I could make a gofundme with enough funds for me and a developer or two to work part time on this for two years - or just do a PBS model and ask for donations every year.
+ const textFunding = `I have a few ideas for the funding model. Ideally, I could get at least two corporate sponsors for feature adding and support funds. 
+ If that's not an option,  I could make a gofundme with enough funds for me and another developer or two to work part time on this for two years - or just do a PBS model and ask for donations every year.
  Finally, if those two don't work, I can make a free tier and paid tier and offer feature building and support for paid users. I'd rather just get two corporate sponsors though. `
   const textDemoScales = `Let's start out with some scales, the below are patterns of scales, let's write some major and minor scales.`
   const textDemoRecap = `notes start at 0, and are relative to the starting note and stay in the key signature.  Look at the last two blocks of text. That is how to write D and F major explicitly using accidentals in C.`
