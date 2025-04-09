@@ -64,7 +64,7 @@ function PlayWindow({ text, id, title, description, recap }: PlayWindowProps) {
     const descriptionText = description || ""
     const htmlDescription = addBrToDescription(descriptionText)
     useEffect(() => {
-        const storedText = text || localStorage.getItem(`${ENTRY_CHORDS}_${id}`);
+        const storedText =  localStorage.getItem(`${ENTRY_CHORDS}_${id}`) || text;
         if (storedText) {
             if (refText.current) {
                 refText.current.value = storedText
