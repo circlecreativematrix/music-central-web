@@ -58,7 +58,8 @@ function App() {
   const textDemoRecap = `notes start at 0, and are relative to the starting note and stay in the key signature.  Look at the last two blocks of text. That is how to write D and F major explicitly using accidentals in C.`
 
 const textYourTurn= `Now it's your turn! 
-Place a note and time in the text area below. your mission, should you choose to accept it: change the notes.
+Your mission, should you choose to accept it: change the notes.
+Place some notes with time in the text area below. 
 Below is an example you can use to get started`
 
 const textExamples = `I hope you enjoyed the excercise. Thank you for taking time to figure out what this all about and how to use it.`
