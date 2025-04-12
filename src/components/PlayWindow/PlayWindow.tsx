@@ -25,7 +25,7 @@ interface CheckBoxType {
     isMidi: boolean;
     isAudio: boolean;
 }
-function btnHandlerConvert(standardText: string, checks:CheckBoxType, isQuit: Ref<boolean>,isExportable: Ref<boolean>, SetFileOut: (arg0: string) => void) {
+function btnHandlerConvert(standardText: string, checks:CheckBoxType, isQuit: Ref<boolean>,isExportable: React.MutableRefObject<boolean>, SetFileOut: (arg0: string) => void) {
 
     runWasmChordStandardNote(standardText).then(res => {
         console.log(res, 'chord_standard_note')
