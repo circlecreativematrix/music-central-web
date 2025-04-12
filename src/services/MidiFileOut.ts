@@ -48,9 +48,9 @@ export interface MidiConstructor extends Constructor {
   SMF: Function | { MTrk: Function } | any
 }
 
-export function secondsToTicks(secondsIn: string, ticksPerQuarterNote: number = 96) {
+export function secondsToTicks(secondsIn: string, ticksPerQuarterNote: number = 480) {
   const seconds = parseFloat(secondsIn)
-  return  seconds* ticksPerQuarterNote
+  return  seconds* ticksPerQuarterNote*2
 }
 
 export function sleep(ms: number) {
@@ -60,7 +60,7 @@ export function sleep(ms: number) {
  * This plays back real time using a start of new Date and goes from there. 
  * @param nbefYamlObj -yaml NBEF object 
  */
-export async function nbefToAudio(nbefYamlObj: NBEF, isQuit: Ref<boolean>) {
+export async function nbefToAudio(nbefYamlObj: NBEF, isQuit: Ref<boolean>, isExportable: Ref<boolean>) {
    
     const startTime = new Date().getTime()
     let currentTime = new Date().getTime()
@@ -102,7 +102,7 @@ export async function nbefToAudio(nbefYamlObj: NBEF, isQuit: Ref<boolean>) {
       else{
         throw new Error( "Unknown signal"+ nbefNote.signal+ nbefNote)
       }
-      
+      isExportable.current = true
     }
  
 
@@ -162,6 +162,32 @@ export function nbefSongToMidi(nbefYamlObj: any, ticksPerQuarterNote: number = 9
  return smf
  
 
+}
+export function placeholderProgram(){
+  return `tempo:120
+time:!START=P
+track:1
+key_type:major,key_note:C4
+chord:I,dur:1/4,split:1,chord_type:major,key_type:major,key_note:C4,time:P+1/4,track:1
+chord:I,dur:1/4,split:1,chord_type:major,key_type:major,key_note:C4,time:P+1/4,track:1
+chord:ii,time:P+1/4
+mode:replace
+fx='''$repl_2
+$repl_2'''
+mode:/replace
+mode:js|repl_2
+function main(){
+return \`note:22,time:P+3/16,dur:$repl\`
+}
+main()
+mode:/js
+
+mode:replace
+repl='''1/4'''
+mode:/replace
+$repl_2
+$fx
+`
 
 }
 
@@ -231,6 +257,7 @@ label:a_chord_via_rewind_method
 node:C4,time:P+1/4
 note:2,time:P
 note:4,time:P
+time:P+1/4
 label:add_a_second_layer_same_track_by_setting_cursor_to_START
 time:$START
 vol:77_20
