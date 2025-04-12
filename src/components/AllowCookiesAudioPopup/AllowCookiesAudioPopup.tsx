@@ -1,7 +1,7 @@
-// Here's an example of how you can create a popup window in React that asks the user to allow cookies and audio playback. It includes a "Play" button that triggers the event you described:
-import React, { useState } from 'react';
+
 import * as Tone from 'tone';
 import './AllowCookiesAudioPopup.css'
+import { useState } from 'react';
 const Popup = () => {
   const [showPopup, setShowPopup] = useState(true);
 

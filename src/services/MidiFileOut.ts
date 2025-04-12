@@ -60,7 +60,7 @@ export function sleep(ms: number) {
  * This plays back real time using a start of new Date and goes from there. 
  * @param nbefYamlObj -yaml NBEF object 
  */
-export async function nbefToAudio(nbefYamlObj: NBEF, isQuit: Ref<boolean>) {
+export async function nbefToAudio(nbefYamlObj: NBEF, isQuit: Ref<boolean>, isExportable: Ref<boolean>) {
    
     const startTime = new Date().getTime()
     let currentTime = new Date().getTime()
@@ -102,7 +102,7 @@ export async function nbefToAudio(nbefYamlObj: NBEF, isQuit: Ref<boolean>) {
       else{
         throw new Error( "Unknown signal"+ nbefNote.signal+ nbefNote)
       }
-      
+      isExportable.current = true
     }
  
 
@@ -257,6 +257,7 @@ label:a_chord_via_rewind_method
 node:C4,time:P+1/4
 note:2,time:P
 note:4,time:P
+time:P+1/4
 label:add_a_second_layer_same_track_by_setting_cursor_to_START
 time:$START
 vol:77_20
