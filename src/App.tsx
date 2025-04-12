@@ -1,18 +1,14 @@
+import Popup from "./components/AllowCookiesAudioPopup/AllowCookiesAudioPopup"
 import PlayWindow from "./components/PlayWindow/PlayWindow"
-import { placeholder, placeholderDemoScales } from "./services/MidiFileOut"
+import { placeholder, placeholderDemoScales, placeholderProgram } from "./services/MidiFileOut"
 import {addBrToDescription } from "./services/TextUtils"
 
 
 function App() {
-  const introText = `This is a demo of Text-Matrix-Midi. 
+  const introText = `This is a demo of Music Central, a midi and audio interface for creating music. 
+  Press "Convert" to convert the text to Audio and listen. Press "Export to Midi" to export the data to Midi.
   This project allows you to convert text-based music notation into audio. 
   You can also export to MIDI files directly in the browser for use in your DAW such as Ableton, FL studio, or LMMS. 
-  The notation includes chords, notes, and labels for different musical elements. 
-  You should specify the tempo, key signature, and note whenever it changes or is started.
-  The first box is a demo. The text is saved in localStorage so it will remain saved when you refresh the page.
-  The rest of this page will demonstrate features. 
-  Press "Convert" to convert the text to Audio and listen. Press "Export to Midi" to export the data to Midi.
-  Copy and paste the text into github snippets or a nopaste to share it with others.
   If using a phone, make sure the volume is up and the ringer is not on a silent mode.
   `
   const textIntroRecap = `note can be specified as distance from the Key origin (note:-1,note:0,note:1) , or to use the previous note (note:P), or previous note plus an offset
@@ -44,9 +40,13 @@ I want to create more tests and create more documentation. This is a late POC ea
   return (<>
     <h1 className="text-3xl font-bold underline text-center">Circle Creative Text-Matrix-Midi (TMM)</h1>
     {/* <PlayWindow text="hoodlevars" id="intro"></PlayWindow> */}
-
-    <PlayWindow text={placeholder()} id="start" title="What is this? Demo - Press Convert" description={introText} recap={textIntroRecap}></PlayWindow>
-    <PlayWindow text={placeholderDemoScales()} id="start" title="Scales" description={textDemoScales} recap={textDemoRecap}></PlayWindow>
+    <Popup />
+    PROGRAM<br/>
+    <PlayWindow text={placeholderProgram()} id="program" title="program and find/replace" description={introText} recap={textIntroRecap}></PlayWindow>
+    COMPILE <br/>
+    <PlayWindow text={placeholderDemoScales()} id="run compiled" title="all notes" description={introText} recap={textIntroRecap}></PlayWindow>
+    {/* <PlayWindow text={placeholder()} id="start" title="What is this? Demo - Press Convert" description={introText} recap={textIntroRecap}></PlayWindow>
+    <PlayWindow text={} id="start" title="Scales" description={textDemoScales} recap={textDemoRecap}></PlayWindow>
     <div style={{ textAlign: "left", fontSize: '16px', color: 'black' }}>
       <h2> Licensing and Converter </h2>
     {addBrToDescription(textPossibilities)}
@@ -54,7 +54,7 @@ I want to create more tests and create more documentation. This is a late POC ea
     {addBrToDescription(textRoadmap)}
     <h2> Funding</h2>
     {addBrToDescription(textFunding)}
-    </div>
+    </div> */}
   </>)
 }
 export default App

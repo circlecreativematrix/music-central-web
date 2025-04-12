@@ -10,7 +10,8 @@ const logger = pino({
 });
 import './PlayWindow.css'
 
-import { nbefSongToMidi, midiToBase64Save, placeholder, nbefToAudio } from '../../services/MidiFileOut'
+import { nbefSongToMidi, midiToBase64Save, placeholder, nbefToAudio as jzzNbefToAudio } from '../../services/MidiFileOut'
+import {  nbefToAudio as toneNbefToAudio } from '../../services/AudioFileOut'
 import { runWasmChordStandardNote, runWasmStandardNote } from '../../services/Wasm'
 import React from 'react';
 import { NBEF } from '../../types/NBEF';
@@ -28,12 +29,11 @@ function btnHandlerConvert(standardText: string, isQuit: Ref<boolean>, SetFileOu
             console.log(res, 'standardnote')
             const nbefYamlObj = YAML.load(res) as NBEF
             console.log('outputting audio')
-            console.log('not mobile')
-            nbefToAudio(nbefYamlObj, isQuit)
-
+            //jzzNbefToAudio(nbefYamlObj, isQuit)
+            toneNbefToAudio(nbefYamlObj, isQuit)
 
             console.log('outputting midi')
-            const smf = nbefSongToMidi(nbefYamlObj, 96, logger)
+            const smf = nbefSongToMidi(nbefYamlObj, 480, logger)
             // if (isMobile) {
             //     console.log('MOBILE!')
             //     SetPlayer(midiPlay(smf, false, true))
@@ -104,7 +104,7 @@ function PlayWindow({ text, id, title, description, recap }: PlayWindowProps) {
                         //SetQuitNow(true) 
                         console.log('stopping')
                     }}>Stop</button>
-                    <a href={fileOut} download="nameOfDownload.mid" target="_blank">
+                    <a href={fileOut} download="Download.mid" target="_blank">
                         <button>Export Midi</button>
                     </a>
                 </div>
