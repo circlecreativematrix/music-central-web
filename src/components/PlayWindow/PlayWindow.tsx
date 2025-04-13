@@ -10,7 +10,8 @@ const logger = pino({
 });
 import './PlayWindow.css'
 
-import { nbefSongToMidi, midiToBase64Save, placeholder, nbefToAudio } from '../../services/MidiFileOut'
+import { nbefSongToMidi, midiToBase64Save, placeholder, nbefToAudio as jzzNbefToAudio } from '../../services/MidiFileOut'
+import {  nbefToAudio as toneNbefToAudio } from '../../services/AudioFileOut'
 import { runWasmChordStandardNote, runWasmStandardNote } from '../../services/Wasm'
 import React from 'react';
 import { NBEF } from '../../types/NBEF';
@@ -18,8 +19,13 @@ const ENTRY_CHORDS = "entry_chords"
 //let isMobile = window.innerWidth < 768
 ///Android|webOS|iPhone|iPad|iPod|BlackBerry|Opera Mini/i.test(navigator.userAgent);
 
-
-function btnHandlerConvert(standardText: string, isQuit: Ref<boolean>, SetFileOut: (arg0: string) => void) {
+interface CheckBoxType {
+    isJZZ: boolean;
+    isTone: boolean;
+    isMidi: boolean;
+    isAudio: boolean;
+}
+function btnHandlerConvert(standardText: string, checks:CheckBoxType, isQuit: Ref<boolean>,isExportable: React.MutableRefObject<boolean>, SetFileOut: (arg0: string) => void) {
 
     runWasmChordStandardNote(standardText).then(res => {
         console.log(res, 'chord_standard_note')
@@ -28,19 +34,19 @@ function btnHandlerConvert(standardText: string, isQuit: Ref<boolean>, SetFileOu
             console.log(res, 'standardnote')
             const nbefYamlObj = YAML.load(res) as NBEF
             console.log('outputting audio')
-            console.log('not mobile')
-            nbefToAudio(nbefYamlObj, isQuit)
-
-
+            if(checks.isJZZ){
+                jzzNbefToAudio(nbefYamlObj, isQuit, isExportable)
+            }
+            if(checks.isTone){
+            toneNbefToAudio(nbefYamlObj, isQuit, checks.isAudio)
+            }
             console.log('outputting midi')
-            const smf = nbefSongToMidi(nbefYamlObj, 96, logger)
-            // if (isMobile) {
-            //     console.log('MOBILE!')
-            //     SetPlayer(midiPlay(smf, false, true))
-            // }
-
-            SetFileOut(midiToBase64Save(smf.dump()))
-            console.log("alldone!")
+            if(checks.isMidi){
+                const smf = nbefSongToMidi(nbefYamlObj, 480, logger)
+                SetFileOut(midiToBase64Save(smf.dump()))
+                console.log("alldone!")
+            }
+          
         })
     })
 }
@@ -58,9 +64,11 @@ function PlayWindow({ text, id, title, description, recap }: PlayWindowProps) {
     const refText = React.useRef<HTMLTextAreaElement>(null)
     //isMobile = window.innerWidth < 768
     const [fileOut, SetFileOut] = useState("")
+    const [checks] = useState({isJZZ: true, isTone: false, isMidi: true, isAudio: true})
     const [player] = useState(undefined)
     const [standardText, SetStandardText] = useState("")
     const isQuit = React.useRef(false)
+    const isExportable = React.useRef(false)
     const descriptionText = description || ""
     const htmlDescription = addBrToDescription(descriptionText)
     useEffect(() => {
@@ -93,8 +101,20 @@ function PlayWindow({ text, id, title, description, recap }: PlayWindowProps) {
                 <div>
                     <button onClick={() => {
                         isQuit.current = false
-                        btnHandlerConvert(standardText, isQuit, SetFileOut)
-                    }}>Convert</button>
+                        btnHandlerConvert(standardText,checks, isQuit, isExportable, SetFileOut)
+                    }}>Convert</button> 
+                        {/* <label>
+                            <input type="checkbox" checked={checks.isJZZ} onChange={(e) => {
+                                SetChecks({ ...checks, isJZZ: e.target.checked });
+                            }} />
+                            JZZ
+                        </label>
+                        <label>
+                            <input type="checkbox" checked={checks.isTone} onChange={(e) => {
+                                SetChecks({ ...checks, isTone: e.target.checked });
+                            }} />
+                            Tone
+                        </label> */}
 
                     <button onClick={() => {
                         if (player) {
@@ -104,8 +124,19 @@ function PlayWindow({ text, id, title, description, recap }: PlayWindowProps) {
                         //SetQuitNow(true) 
                         console.log('stopping')
                     }}>Stop</button>
-                    <a href={fileOut} download="nameOfDownload.mid" target="_blank">
-                        <button>Export Midi</button>
+                    <a href={fileOut} download="Download.mid" target="_blank">
+                        <button disabled={!isExportable.current as any} >Export Midi</button>
+                        {/* <input type ="checkbox" checked={checks.isMidi} onChange={(e) => {
+                            SetChecks({ ...checks, isMidi: e.target.checked });
+                        }
+                        } />
+                        Midi
+                        <input type ="checkbox" checked={checks.isAudio} onChange={(e) => {
+                            SetChecks({ ...checks, isAudio: e.target.checked });
+                        }
+                        } />
+                        Audio */}
+
                     </a>
                 </div>
                 <textarea style={{ width: '100%', height: '600px' }} ref={refText} value={standardText} onChange={(e) => {

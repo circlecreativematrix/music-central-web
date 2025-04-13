@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "vitest --test-timeout 100000"
+    "test": "vitest src/* --test-timeout 100000",
+    "test1": "vitest src/services/ProcessTextArea.test.ts --test-timeout 100000"
   },
   "dependencies": {
     "@extism/extism": "^2.0.0-rc9",
@@ -23,6 +24,9 @@
     "pino": "^9.4.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "smol-toml": "^1.3.1",
+    "tone": "^15.0.4",
+    "wav-encoder": "^1.3.0",
     "yaml": "^2.6.0"
   },
   "devDependencies": {
