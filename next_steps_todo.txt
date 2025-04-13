@@ -1,0 +1,62 @@
+needs shortcuts and programming - can I use javascript interpreter ? just javascript execute
+with console.log out... or... a file out? 
+
+and can I just have find/replace shortcuts for blocks of music? 
+either a: defined as a variable
+trustimport:1,mode:import|https://raw.github.com/some_javascript //todo later 
+(mode:import).*?\n'
+jstrust:1 // do this later. 
+mode:js
+eval("my script here");
+https://www.npmjs.com/package/smol-toml
+
+ 
+let x = `note:0,time:P+1/4
+		 $$test`
+function objectToTMM(obj){
+	let TMM = []
+	for(let key of Object.keys(obj)){
+		TMM.push([key+":"+obj[key]])
+	}
+
+	return TMM.join(",")
+}
+
+
+function main(){
+return x*3; 
+}
+//END_JAVASCRIPT
+
+mode:replace
+
+
+// takes the end of the javascript code and does a find and replace on each of them.
+//BEGIN_FIND_REPLACE_TOML - replaces everything after it - pass after javascript completes. 
+mode:replace,namespace:foobar
+(mode:js)(?s:.*)(mode:\/js)/gms
+https://stackoverflow.com/questions/8303488/regex-to-match-any-character-including-new-lines
+// get the blocks, toml import the blocks , go through each and replace $$\w with bag[word] if exists
+(\$\$[A-Za-z0-9_.]+)(\n|,| )
+
+@foobar@_time_1="P+1/2"
+note_1="0"
+test='''
+	notes:$$note_1,time:$$time_1
+	notes:0,time:P+1/4'''
+//END_FIND_REPLACE_TOML
+
+mode:/replace 
+(mode:replace).+(mode:\/replace)/gms
+// places all of this string at the insertion point of wherever it lands. 
+
+
+note:1,time:P+1/12
+note:1,time:P+1/12
+note:1,time:P+1/12
+note:1,time:P+1/12
+note:1,time:P+1/12
+note:1,time:P+1/12
+note:1,time:P+1/12
+note:1,time:P+1/12
+note:1,time:P+1/12
