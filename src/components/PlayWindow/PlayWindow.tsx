@@ -25,7 +25,7 @@ interface CheckBoxType {
     isMidi: boolean;
     isAudio: boolean;
 }
-function btnHandlerConvert(standardText: string, checks:CheckBoxType, isQuit: Ref<boolean>,isExportable: React.MutableRefObject<boolean>, SetFileOut: (arg0: string) => void) {
+function btnHandlerConvert(standardText: string, checks:CheckBoxType, isQuit: Ref<boolean>,SetIsExportable: (arg0: boolean) => void, SetFileOut: (arg0: string) => void) {
 
     runWasmChordStandardNote(standardText).then(res => {
         console.log(res, 'chord_standard_note')
@@ -35,7 +35,7 @@ function btnHandlerConvert(standardText: string, checks:CheckBoxType, isQuit: Re
             const nbefYamlObj = YAML.load(res) as NBEF
             console.log('outputting audio')
             if(checks.isJZZ){
-                jzzNbefToAudio(nbefYamlObj, isQuit, isExportable)
+                jzzNbefToAudio(nbefYamlObj, isQuit)
             }
             if(checks.isTone){
             toneNbefToAudio(nbefYamlObj, isQuit, checks.isAudio)
@@ -44,6 +44,7 @@ function btnHandlerConvert(standardText: string, checks:CheckBoxType, isQuit: Re
             if(checks.isMidi){
                 const smf = nbefSongToMidi(nbefYamlObj, 480, logger)
                 SetFileOut(midiToBase64Save(smf.dump()))
+                SetIsExportable(true)
                 console.log("alldone!")
             }
           
@@ -68,7 +69,7 @@ function PlayWindow({ text, id, title, description, recap }: PlayWindowProps) {
     const [player] = useState(undefined)
     const [standardText, SetStandardText] = useState("")
     const isQuit = React.useRef(false)
-    const isExportable = React.useRef(false)
+    const [Exportable, SetIsExportable] = useState(false)
     const descriptionText = description || ""
     const htmlDescription = addBrToDescription(descriptionText)
     useEffect(() => {
@@ -101,7 +102,7 @@ function PlayWindow({ text, id, title, description, recap }: PlayWindowProps) {
                 <div>
                     <button onClick={() => {
                         isQuit.current = false
-                        btnHandlerConvert(standardText,checks, isQuit, isExportable, SetFileOut)
+                        btnHandlerConvert(standardText,checks, isQuit, SetIsExportable, SetFileOut)
                     }}>Convert</button> 
                         {/* <label>
                             <input type="checkbox" checked={checks.isJZZ} onChange={(e) => {
@@ -125,7 +126,7 @@ function PlayWindow({ text, id, title, description, recap }: PlayWindowProps) {
                         console.log('stopping')
                     }}>Stop</button>
                     <a href={fileOut} download="Download.mid" target="_blank">
-                        <button disabled={!isExportable.current as any} >Export Midi</button>
+                        <button disabled={!Exportable as any} >Export Midi</button>
                         {/* <input type ="checkbox" checked={checks.isMidi} onChange={(e) => {
                             SetChecks({ ...checks, isMidi: e.target.checked });
                         }

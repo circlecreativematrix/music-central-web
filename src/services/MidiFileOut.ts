@@ -60,7 +60,7 @@ export function sleep(ms: number) {
  * This plays back real time using a start of new Date and goes from there. 
  * @param nbefYamlObj -yaml NBEF object 
  */
-export async function nbefToAudio(nbefYamlObj: NBEF, isQuit: Ref<boolean>, isExportable: React.MutableRefObject<boolean>) {
+export async function nbefToAudio(nbefYamlObj: NBEF, isQuit: Ref<boolean>) {
    
     const startTime = new Date().getTime()
     let currentTime = new Date().getTime()
@@ -105,9 +105,11 @@ export async function nbefToAudio(nbefYamlObj: NBEF, isQuit: Ref<boolean>, isExp
 
     }
  
-    if(isExportable != null){
-      isExportable.current = true
-    }
+    
+
+    return true
+     
+    
 
 
 
