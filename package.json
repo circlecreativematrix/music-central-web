@@ -16,7 +16,7 @@
     "@jochlain/babel-plugin-yaml": "^1.0.0",
     "@typescript-eslint/parser": "^8.8.1",
     "@vitejs/plugin-react": "^4.3.2",
-    "jotai": "^2.12.2",
+    "jotai": "^2.12.3",
     "js-yaml": "^4.1.0",
     "jzz": "^1.8.6",
     "jzz-input-kbd": "^1.3.4",

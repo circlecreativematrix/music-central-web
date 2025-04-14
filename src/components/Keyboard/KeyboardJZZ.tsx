@@ -1,7 +1,7 @@
 import JZZ from 'jzz'
 import { Tiny } from 'jzz-synth-tiny';
 import { Kbd } from 'jzz-input-kbd'
-import { useEffect, useRef, useState,forwardRef, Ref } from 'react';
+import { useEffect, useRef, useState, Ref } from 'react';
 
 
 Tiny(JZZ);

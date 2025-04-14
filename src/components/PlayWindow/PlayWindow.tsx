@@ -17,6 +17,8 @@ import React from 'react';
 import { NBEF } from '../../types/NBEF';
 import { Piano } from '../Keyboard/Piano';
 const ENTRY_CHORDS = "entry_chords"
+
+
 //let isMobile = window.innerWidth < 768
 ///Android|webOS|iPhone|iPad|iPod|BlackBerry|Opera Mini/i.test(navigator.userAgent);
 
@@ -65,6 +67,7 @@ interface PlayWindowProps {
 function PlayWindow({ text, id, title, description, recap }: PlayWindowProps) {
     const refText = React.useRef<HTMLTextAreaElement>(null)
     //isMobile = window.innerWidth < 768
+    //const textAtom = atom('hello')
     const [fileOut, SetFileOut] = useState("")
     const [checks] = useState({isJZZ: true, isTone: false, isMidi: true, isAudio: true})
     const [player] = useState(undefined)
@@ -99,7 +102,7 @@ function PlayWindow({ text, id, title, description, recap }: PlayWindowProps) {
                     {htmlDescription}
                 </div >
                 <div style={{ alignContent:"center", textAlign: "center", fontSize: '16px', color: 'white' }}>
-                   <Piano id={id}/>  
+                   <Piano id={id} textBox={refText} setText={SetStandardText}/>  
                 </div>
                
                 <br />
