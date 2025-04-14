@@ -15,6 +15,7 @@ import {  nbefToAudio as toneNbefToAudio } from '../../services/AudioFileOut'
 import { runWasmChordStandardNote, runWasmStandardNote } from '../../services/Wasm'
 import React from 'react';
 import { NBEF } from '../../types/NBEF';
+import { Piano } from '../Keyboard/Piano';
 const ENTRY_CHORDS = "entry_chords"
 //let isMobile = window.innerWidth < 768
 ///Android|webOS|iPhone|iPad|iPod|BlackBerry|Opera Mini/i.test(navigator.userAgent);
@@ -96,8 +97,11 @@ function PlayWindow({ text, id, title, description, recap }: PlayWindowProps) {
                 <h1>{title}</h1>
                 <div style={{ textAlign: "left", fontSize: '16px', color: 'white' }}>
                     {htmlDescription}
+                </div >
+                <div style={{ alignContent:"center", textAlign: "center", fontSize: '16px', color: 'white' }}>
+                   <Piano id={id}/>  
                 </div>
-
+               
                 <br />
                 <div>
                     <button onClick={() => {
