@@ -22,8 +22,8 @@ export function Piano(props: PianoInputs) {
     const [highlightedKey, setHighlightedKey] = useState({} as any)
 
     const mapKeyNote:any = {
-        A:'F#4', Z:'G4', S:'G#4', X:'A4', D:'B@4', C:'B4', V:'C5', G:'C#5', B:'D5',
-        H:'D#5', N:'E5', M:'F5', K:'F#5', '<':'G5', L:'G#5', '>':'A5', ':':'B@5'
+        A:'F4#', Z:'G4', S:'G4#', X:'A4', D:'B4@', C:'B4', V:'C5', G:'C5#', B:'D5',
+        H:'D5#', N:'E5', M:'F5', K:'F5#', '<':'G5', L:'G5#', '>':'A5', ':':'B5@'
       }
     const sendLineToTextBox = (line: string) => {
         if(!((props as PianoInputs).textBox as any).current){
@@ -174,7 +174,8 @@ export function Piano(props: PianoInputs) {
             }
             const left = mapping[i%mapping.length] + currentLength + blackKey.offset
             currentLength += mapping[i%mapping.length]
-            const note = KeyMap.blackKeys[i % 5] + Math.floor(i / 5 + octave)
+            let note:string = KeyMap.blackKeys[i % 5]
+            note = note[0] + Math.floor(i / 5 + octave) +note[1] 
             const nameOfKey = `${note}_${id}`
             blackKeys.push(
                 <div
