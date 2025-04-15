@@ -2,3 +2,12 @@
     .highlight{
         background-color: aqua;
     }
+
+    .no-select {
+        -webkit-touch-callout: none;  /* Safari */
+        -webkit-user-select: none;  /* Safari */
+        -ms-user-select: none; /* IE 10+ */
+        user-select: none; /* Standard syntax */
+        -webkit-user-drag: none; /* Disable dragging the element itself */
+        touch-action: manipulation; /* Prevent scrolling or other default actions */
+      }

@@ -44,6 +44,8 @@ export function Piano(props: PianoInputs) {
             pianoContainer.current.removeEventListener('keyup', () => {})
             pianoContainer.current.removeEventListener('mousedown', () => {})
             pianoContainer.current.removeEventListener('mouseup', () => {})
+            pianoContainer.current.removeEventListener('touchstart', mouseDown )
+            pianoContainer.current.removeEventListener('touchend',mouseUp )
     }
     const mouseUp = (e: MouseEvent|TouchEvent) => {
         const note = (e.target as HTMLElement)?.id.split('_')[0]
@@ -199,7 +201,7 @@ export function Piano(props: PianoInputs) {
     }
     
     return (<>
-        <div className="piano-container" 
+        <div className="piano-container no-select" 
         onClick={() => {
             //focus 
             console.log('piano-container clicked')
