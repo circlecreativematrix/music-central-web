@@ -45,43 +45,47 @@ export function Piano(props: PianoInputs) {
             pianoContainer.current.removeEventListener('mousedown', () => {})
             pianoContainer.current.removeEventListener('mouseup', () => {})
     }
+    const mouseUp = (e: MouseEvent|TouchEvent) => {
+        const note = (e.target as HTMLElement)?.id.split('_')[0]
+        const noteId = (e.target as HTMLElement)?.id
+        if (noteId.includes('piano-container')) {
+            console.log('piano-container ignored')
+            return // ignore the container
+                         }
+        highlightedKey[noteId] = false
+        setHighlightedKey({ ...highlightedKey })
+       
+        console.log('note',note)
+        if (note) {
+            console.log('mouseup-placeholder', note)
+         
+        }
+    }
+    const mouseDown = (e: MouseEvent|TouchEvent) => {
+        const note = (e.target as HTMLElement)?.id.split('_')[0]
+        const noteId = (e.target as HTMLElement)?.id
+        if (noteId.includes('piano-container')) {
+            console.log('piano-container ignored')
+            return // ignore the container
+                         }
+        console.log('note',note)
+        if (note) {
+            console.log('mousedown', note)
+            tiny.noteOn(0, note, Math.floor(127 * volume)).wait(500).noteOff(0, note)
+        }
+        
+        highlightedKey[noteId] = true
+        setHighlightedKey({ ...highlightedKey })
+        sendLineToTextBox(`label:mousedown\nnote:${note.toUpperCase()},time:P+1/4`) // hardcoded , todo: make an entry for it
+    }
     const addEventListenerToPiano = () => {
         if(pianoContainer.current){
            
             
-            pianoContainer.current.addEventListener('mousedown', (e: MouseEvent) => {
-                const note = (e.target as HTMLElement)?.id.split('_')[0]
-                const noteId = (e.target as HTMLElement)?.id
-                if (noteId.includes('piano-container')) {
-                    console.log('piano-container ignored')
-                    return // ignore the container
-                                 }
-                console.log('note',note)
-                if (note) {
-                    console.log('mousedown', note)
-                    tiny.noteOn(0, note, Math.floor(127 * volume)).wait(500).noteOff(0, note)
-                }
-                
-                highlightedKey[noteId] = true
-                setHighlightedKey({ ...highlightedKey })
-                sendLineToTextBox(`label:mousedown\nnote:${note.toUpperCase()},time:P+1/4`) // hardcoded , todo: make an entry for it
-            })
-            pianoContainer.current.addEventListener('mouseup', (e: MouseEvent) => {
-                const note = (e.target as HTMLElement)?.id.split('_')[0]
-                const noteId = (e.target as HTMLElement)?.id
-                if (noteId.includes('piano-container')) {
-                    console.log('piano-container ignored')
-                    return // ignore the container
-                                 }
-                highlightedKey[noteId] = false
-                setHighlightedKey({ ...highlightedKey })
-               
-                console.log('note',note)
-                if (note) {
-                    console.log('mouseup-placeholder', note)
-                 
-                }
-            })
+            pianoContainer.current.addEventListener('mousedown', mouseDown )
+            pianoContainer.current.addEventListener('mouseup',mouseUp )
+            pianoContainer.current.addEventListener('touchstart', mouseDown )
+            pianoContainer.current.addEventListener('touchend',mouseUp )
         pianoContainer.current.addEventListener('keydown', (e: KeyboardEvent) => {
             const key = e.key.toUpperCase()
             const note = mapKeyNote[key]
