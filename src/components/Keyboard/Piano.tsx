@@ -48,13 +48,14 @@ export function Piano(props: PianoInputs) {
             pianoContainer.current.removeEventListener('touchend',mouseUp )
     }
     const mouseUp = (e: MouseEvent|TouchEvent) => {
+        e.preventDefault()
         const note = (e.target as HTMLElement)?.id.split('_')[0]
         const noteId = (e.target as HTMLElement)?.id
         if (noteId.includes('piano-container')) {
             console.log('piano-container ignored')
             return // ignore the container
                          }
-        highlightedKey[noteId] = false
+        highlightedKey[noteId] = undefined
         setHighlightedKey({ ...highlightedKey })
        
         console.log('note',note)
@@ -64,6 +65,7 @@ export function Piano(props: PianoInputs) {
         }
     }
     const mouseDown = (e: MouseEvent|TouchEvent) => {
+        e.preventDefault()
         const note = (e.target as HTMLElement)?.id.split('_')[0]
         const noteId = (e.target as HTMLElement)?.id
         if (noteId.includes('piano-container')) {
@@ -78,7 +80,7 @@ export function Piano(props: PianoInputs) {
         
         highlightedKey[noteId] = true
         setHighlightedKey({ ...highlightedKey })
-        sendLineToTextBox(`label:mousedown\nnote:${note.toUpperCase()},time:P+1/16`) // hardcoded , todo: make an entry for it
+        sendLineToTextBox(`label:mousedown\nnote:${note.toUpperCase()},time:P+1/8`) // hardcoded , todo: make an entry for it
     }
     const addEventListenerToPiano = () => {
         if(pianoContainer.current){
