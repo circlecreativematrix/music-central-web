@@ -206,7 +206,7 @@ export function Piano(props: PianoInputs) {
             position: 'relative',
             margin: 0,
             padding: 0,
-            width: '50%',
+            width: '100%',
             height: '161px',
             userSelect: 'none',
             cursor: 'default',
