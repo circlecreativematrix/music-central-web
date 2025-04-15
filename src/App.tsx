@@ -71,14 +71,14 @@ const textExamples = `I hope you enjoyed the excercise. Thank you for taking tim
     <PlayWindow text={placeholderProgram()} id="program" title="program and find/replace" description={introText} recap={textIntroRecap}></PlayWindow>
     COMPILE <br/>
     <PlayWindow text={placeholderDemoScales()} id="run compiled" title="all notes" description={introText} recap={textIntroRecap}></PlayWindow> */}
-    <PlayWindow text={placeholder()} id="1.start" title="What is this? Demo - Press Convert" description={introText} recap={textIntroRecap}></PlayWindow>
-    <PlayWindow text={placeholderDemoScales()} id="2.scales" title="Scales" description={textDemoScales} recap={textDemoRecap}></PlayWindow>
+    <PlayWindow text={placeholder()} id="1.start" title="What is this? Demo - Press Convert" description={introText} recap={textIntroRecap} usePiano={false}></PlayWindow>
+    <PlayWindow text={placeholderDemoScales()} id="2.scales" title="Scales" description={textDemoScales} recap={textDemoRecap} usePiano={false}></PlayWindow>
     <PlayWindow text={`
 label:your_first_song!
 key_type:major,key_note:C5
 note:0,time:P+1/4
 note:C5,time:P+1/4,dur:1/4
-note:P-4,time:P+1/4,dur:1/8`} id="3.try" title="Your Turn" description={textYourTurn} recap={textExamples}></PlayWindow>
+note:P-4,time:P+1/4,dur:1/8`} id="3.try" title="Your Turn" description={textYourTurn} recap={textExamples} usePiano={true}></PlayWindow>
     <div style={{ textAlign: "left", fontSize: '16px', color: 'black' }}>
       <h2> Licensing and Converter </h2>
     {addBrToDescription(textPossibilities)}

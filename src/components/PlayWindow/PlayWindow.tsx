@@ -62,9 +62,10 @@ interface PlayWindowProps {
     title: string;
     description?: string;
     recap?: string;
+    usePiano?: boolean
 }
 
-function PlayWindow({ text, id, title, description, recap }: PlayWindowProps) {
+function PlayWindow({ text, id, title, description, recap, usePiano }: PlayWindowProps) {
     const refText = React.useRef<HTMLTextAreaElement>(null)
     //isMobile = window.innerWidth < 768
     //const textAtom = atom('hello')
@@ -101,11 +102,11 @@ function PlayWindow({ text, id, title, description, recap }: PlayWindowProps) {
                 <div style={{ textAlign: "left", fontSize: '16px', color: 'white' }}>
                     {htmlDescription}
                 </div >
+                {usePiano &&
                 <div style={{ alignContent:"center", textAlign: "center", fontSize: '16px', color: 'white' }}>
                    <Piano id={id} textBox={refText} setText={SetStandardText}/>  
                 </div>
-               
-                <br />
+}
                 <div>
                     <button onClick={() => {
                         isQuit.current = false
