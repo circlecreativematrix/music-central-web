@@ -33,7 +33,7 @@ export function Piano(props: PianoInputs) {
 
         const textAreaSet = (props as PianoInputs).setText
         const textBoxRef = (props as PianoInputs).textBox as any
-        textBoxRef.current.value += line + "\n"
+        textBoxRef.current.value += +"\n" +line + "\n"
         textAreaSet(textBoxRef.current.value)
         localStorage.setItem(`${ENTRY_CHORDS}_${id}`, textBoxRef.current.value)
 
@@ -74,13 +74,18 @@ export function Piano(props: PianoInputs) {
                          }
         console.log('note',note)
         if (note) {
+            sendLineToTextBox(`label:mousedown\nnote:${note},time:P+1/8`) // hardcoded , todo: make an entry for it
             console.log('mousedown', note)
-            tiny.noteOn(0, note, Math.floor(127 * volume)).wait(500).noteOff(0, note)
+            let outNote = note
+            if(note.includes('#') || note.includes('@')){
+                 outNote = note[0] + note[2] + note[1]
+            }
+            tiny.noteOn(0, outNote, Math.floor(127 * volume)).wait(500).noteOff(0, note)
         }
         
         highlightedKey[noteId] = true
         setHighlightedKey({ ...highlightedKey })
-        sendLineToTextBox(`label:mousedown\nnote:${note.toUpperCase()},time:P+1/8`) // hardcoded , todo: make an entry for it
+       
     }
     const addEventListenerToPiano = () => {
         if(pianoContainer.current){
@@ -103,8 +108,13 @@ export function Piano(props: PianoInputs) {
            
             if (note) {
                 console.log('keydown', note)
-                tiny.noteOn(0, note, Math.floor(127 * volume))
-                sendLineToTextBox(`label:keydown\nnote:${note.toUpperCase()},time:P+1/8note:${note.toUpperCase()},time:P+1/4`)
+                sendLineToTextBox(`label:keydown\nnote:${note},time:P+1/8note:${note.toUpperCase()},time:P+1/4`)
+                let outNote = note
+                if(note.includes('#') || note.includes('@')){
+                     outNote = note[0] + note[2] + note[1]
+                }
+                tiny.noteOn(0, outNote, Math.floor(127 * volume))
+                
             }
         })
             pianoContainer.current.addEventListener('keyup', (e: KeyboardEvent) => {
@@ -208,9 +218,9 @@ export function Piano(props: PianoInputs) {
         onClick={() => {
             //focus 
             console.log('piano-container clicked')
-            // if (pianoContainer.current) {
-            //     pianoContainer.current.focus()
-            // }
+            if (pianoContainer.current) {
+                pianoContainer.current.focus()
+            }
         }}
         id={`${'piano-container'}_${id}`}
         ref ={pianoContainer}
