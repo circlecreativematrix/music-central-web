@@ -14,8 +14,8 @@ export function Piano(props: PianoInputs) {
     const isMobile = window.innerWidth <= 768
     const id = props.id || Math.floor(Math.random()*10000+1).toString()
     const octave = 3
-    const whiteKey = {count: 17, leftOffset: 42, backgroundColor: 'rgb(255, 255, 255)', highlightColor: 'rgb(69, 121, 243)' ,borderColor: 'rgb(0, 0, 0)' }
-    const blackKey = {offset: 42, backgroundColor: 'rgb(128, 10, 10)', highlightColor:'rgb(69, 121, 243)', borderColor: 'rgb(0, 0, 0)' }
+    const whiteKey = {count: 14, leftOffset: 0, backgroundColor: 'rgb(255, 255, 255)', highlightColor: 'rgb(69, 121, 243)' ,borderColor: 'rgb(0, 0, 0)' }
+    const blackKey = {count: 10, octaveOffset:10+43, offset: 0,leftOffset:[28, 43, 43*2-5, 43+2, 43+2], backgroundColor: 'rgb(128, 10, 10)', highlightColor:'rgb(69, 121, 243)', borderColor: 'rgb(0, 0, 0)' }
     const KeyMap = {whiteKeys: ['C', 'D', 'E', 'F', 'G', 'A', 'B'], blackKeys: ['C#', 'D#', 'F#', 'G#', 'A#'] }
     const tiny = (JZZ as any).synth.Tiny()
     const pianoContainer = useRef<HTMLDivElement>(null)
@@ -76,7 +76,7 @@ export function Piano(props: PianoInputs) {
         
         highlightedKey[noteId] = true
         setHighlightedKey({ ...highlightedKey })
-        sendLineToTextBox(`label:mousedown\nnote:${note.toUpperCase()},time:P+1/4`) // hardcoded , todo: make an entry for it
+        sendLineToTextBox(`label:mousedown\nnote:${note.toUpperCase()},time:P+1/16`) // hardcoded , todo: make an entry for it
     }
     const addEventListenerToPiano = () => {
         if(pianoContainer.current){
@@ -100,7 +100,7 @@ export function Piano(props: PianoInputs) {
             if (note) {
                 console.log('keydown', note)
                 tiny.noteOn(0, note, Math.floor(127 * volume))
-                sendLineToTextBox(`label:keydown\nnote:${note.toUpperCase()},time:P+1/4note:${note.toUpperCase()},time:P+1/4`)
+                sendLineToTextBox(`label:keydown\nnote:${note.toUpperCase()},time:P+1/8note:${note.toUpperCase()},time:P+1/4`)
             }
         })
             pianoContainer.current.addEventListener('keyup', (e: KeyboardEvent) => {
@@ -158,10 +158,18 @@ export function Piano(props: PianoInputs) {
         }
         return whiteKeys
     }
-    function createBlackKeys(mapping: number[]) {
+    function createBlackKeys(count:number, mapping: number[]) {
         const blackKeys = []
-        for (let i = 0; i < mapping.length; i++) {
-            const left = mapping[i] + blackKey.offset
+        let currentLength = 0
+        let octaveLength = 0 
+        let octaveOffset = blackKey.octaveOffset 
+        for (let i = 0; i < count; i++) {
+            if (i % mapping.length == 0 && i != 0) {
+                octaveLength += octaveOffset
+                currentLength += octaveLength
+            }
+            const left = mapping[i%mapping.length] + currentLength + blackKey.offset
+            currentLength += mapping[i%mapping.length]
             const note = KeyMap.blackKeys[i % 5] + Math.floor(i / 5 + octave)
             const nameOfKey = `${note}_${id}`
             blackKeys.push(
@@ -206,7 +214,7 @@ export function Piano(props: PianoInputs) {
             position: 'relative',
             margin: 0,
             padding: 0,
-            width: '50%',
+            width: '100%',
             height: '161px',
             userSelect: 'none',
             cursor: 'default',
@@ -216,7 +224,7 @@ export function Piano(props: PianoInputs) {
             {/* White keys */}
             {createWhiteKeys(whiteKey.count)}
             {/* Black keys */}
-            {createBlackKeys([27, 75, 150, 198, 246, 321, 369, 444, 492, 540, 615, 663])}
+            {createBlackKeys(blackKey.count, blackKey.leftOffset)}
         </div>
     </>)
 
